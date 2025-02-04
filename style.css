@@ -5,7 +5,6 @@ body {
     background-color:#EEE;
     font-family:'Lato',Helvetica,Arial;
     font-size:15px;
-    display:flex;
     margin:0;
     min-height:100vh;
 }
@@ -60,7 +59,35 @@ main {
 }
 h1 {
     font-family:'Hepta Slab', Helvetica, Arial;
+    text-align: center;
+    background-color: #244c88;
+    color: #FFF;
 }
+.sabores {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 26px 20px;
+
+}
+.salgadas {
+  font-family:'Hepta Slab', Helvetica, Arial;
+  background-color: #399ade;
+  color: #FFF;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.doces {
+    font-family:'Hepta Slab', Helvetica, Arial;
+    background-color: #399ade;
+    color: #FFF;
+    padding: 8px;
+    border-radius: 8px; 
+    cursor: pointer;
+    
+}
+
 .pizza-area {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
