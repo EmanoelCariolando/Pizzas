@@ -1,7 +1,9 @@
      const el = (el) => document.querySelector(el);     
      const  elAll= (elAll) => document.querySelectorAll(elAll);
-
-     //QuerySelectors
+     let modalqt = 1;
+     let modalKey = 0;
+     let cart = [];
+     //Variables
      
      pizzaJson.map((item, index)=>{
       let pizzaItem = el('.models .pizza-item').cloneNode(true);
@@ -13,8 +15,9 @@
       pizzaItem.querySelector('.pizza-item--price').innerHTML = `$  ${item.price.toFixed(2)}` 
       pizzaItem.querySelector('a').addEventListener('click',(e) => { 
        e.preventDefault();
+
        let key = e.target.closest('.pizza-item').getAttribute('data-key');
-        let modalqt = 1;
+       modalKey = key;
 
       //Selects
 
@@ -27,12 +30,12 @@
        el('.pizzaInfo--qt').innerHTML = modalqt;
 
        elAll('.pizzaInfo--size').forEach((size, sizeIndex)=>{
-         if(sizeIndex === 2){
-            size.classList.add('selected');
-         }
-         size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex]
-        
-       })
+        if(sizeIndex === 2){
+           size.classList.add('selected');
+        }
+        size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex]
+       
+      })
        
        
        el('.pizzaWindowArea').style.opacity = 0;
@@ -43,19 +46,51 @@
      
      })
      
-     el('.pizza-area').append(pizzaItem);
-})
+      el('.pizza-area').append(pizzaItem);
+ })
+ 
+ // events Modal window 
+ 
+   const closeModal = () => {
+    el('.pizzaWindowArea').style.opacity = 0;
+   
+    setTimeout(()=>{
+    el('.pizzaWindowArea').style.display = 'none';
+    },500);
+   }
 
-// events Modal window 
 
-  const closeModal = () => {
-   el('.pizzaWindowArea').style.opacity = 0;
-  
-   setTimeout(()=>{
-   el('.pizzaWindowArea').style.display = 'none';
-   },500);
-  
-  }
-  elAll('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item)=>{
-   item.addEventListener('click', closeModal)
-  })
+ 
+   elAll('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item)=>{
+    item.addEventListener('click', closeModal)
+   })
+ 
+   el('.pizzaInfo--qtmenos').addEventListener('click', (e) => {
+   if(modalqt > 1){
+    modalqt-- ;
+ }
+    el('.pizzaInfo--qt').innerHTML = modalqt;
+   })
+   el('.pizzaInfo--qtmais').addEventListener('click', (e) => {
+     modalqt++ ;
+     el('.pizzaInfo--qt').innerHTML = modalqt;
+   })
+   //size 
+  elAll('.pizzaInfo--size').forEach((size, sizeIndex)=>{
+   size.addEventListener('click', (e) => {
+     el('.pizzaInfo--size.selected').classList.remove('selected');
+     size.classList.add('selected');
+   })
+ });
+
+   el('.pizzaInfo--addButton').addEventListener('click', (e) => {
+     let size = parseInt(el('.pizzaInfo--size.selected').getAttribute('data-key'))
+
+     cart.push({
+      id:pizzaJson[modalKey].id,
+      size,
+      qt:modalqt
+     })
+
+    closeModal()
+   })
