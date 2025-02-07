@@ -15,10 +15,9 @@
       pizzaItem.querySelector('.pizza-item--price').innerHTML = `$  ${item.price.toFixed(2)}` 
       pizzaItem.querySelector('a').addEventListener('click',(e) => { 
        e.preventDefault();
-
        let key = e.target.closest('.pizza-item').getAttribute('data-key');
        modalKey = key;
-
+       
       //Selects
 
        el('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
@@ -86,11 +85,61 @@
    el('.pizzaInfo--addButton').addEventListener('click', (e) => {
      let size = parseInt(el('.pizzaInfo--size.selected').getAttribute('data-key'))
 
+     let indentifier = pizzaJson[modalKey].id+'@'+size;
+     let key = cart.findIndex((item) => {
+     return item.indentifier === indentifier
+     })
+     if(key > -1){
+
+     } else {
      cart.push({
+      indentifier,
       id:pizzaJson[modalKey].id,
       size,
       qt:modalqt
      })
-
+ }
+    uptadeCart()
     closeModal()
    })
+
+   function uptadeCart(){
+    if (cart.length > 0){
+
+      el('aside').classList.add('show')
+  
+ 
+
+      for(let i in cart){
+        let pizzaItem = pizzaJson.find((item) => item.id == cart[i].id);
+        let cartItem = el('.models .cart--item').cloneNode(true)
+        
+
+        let pizzaSizesItems;
+        switch(cart[i].size) {
+          case 0: 
+          pizzaSizesItems = 'P'
+          break;
+          case 1:
+            pizzaSizesItems ='M'
+            break;
+            case 2:
+              pizzaSizesItems ='G'
+              break;
+        }
+
+        let nameAndSize = `${pizzaItem.name} (${pizzaSizesItems})`;
+       
+        cartItem.querySelector('img').src = pizzaItem.img
+        cartItem.querySelector('.cart--item-nome').innerHTML = nameAndSize
+        cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt
+  
+        el('aside').append(cartItem);
+       }
+      
+      }
+   
+    else { 
+      el('aside').classList.remove('show')
+   }
+  }
