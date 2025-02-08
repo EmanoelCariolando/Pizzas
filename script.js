@@ -2,6 +2,7 @@
      const  elAll= (elAll) => document.querySelectorAll(elAll);
      let modalqt = 1;
      let modalKey = 0;
+     let real = 0;
      let cart = [];
      //Variables
      
@@ -92,7 +93,7 @@
      if(key > -1){
 
      } else {
-     cart.push({
+      cart.push({
       indentifier,
       id:pizzaJson[modalKey].id,
       size,
@@ -105,14 +106,19 @@
 
    function uptadeCart(){
     if (cart.length > 0){
+      el('aside').classList.add('show');
+      el('.cart').innerHTML = ''
 
-      el('aside').classList.add('show')
-  
- 
+      let subtotal = 0
+      let desconto = 0
+      let total = 0
 
       for(let i in cart){
         let pizzaItem = pizzaJson.find((item) => item.id == cart[i].id);
+        subtotal += pizzaItem.price * cart[i].qt
+
         let cartItem = el('.models .cart--item').cloneNode(true)
+           
         
 
         let pizzaSizesItems;
@@ -125,7 +131,7 @@
             break;
             case 2:
               pizzaSizesItems ='G'
-              break;
+              break;finalizarC(i)
         }
 
         let nameAndSize = `${pizzaItem.name} (${pizzaSizesItems})`;
@@ -133,13 +139,53 @@
         cartItem.querySelector('img').src = pizzaItem.img
         cartItem.querySelector('.cart--item-nome').innerHTML = nameAndSize
         cartItem.querySelector('.cart--item--qt').innerHTML = cart[i].qt
-  
-        el('aside').append(cartItem);
+        cartItem.querySelector('.cart--item-qtmais').addEventListener('click', () =>{
+         cart[i].qt++
+         uptadeCart();
+        })
+
+        cartItem.querySelector('.cart--item-qtmenos').addEventListener('click', () =>{
+          if(cart[i].qt > 1){
+           cart[i].qt--
+           uptadeCart()
+    
+          }
+          else {
+            cart.splice(i,1)
+            uptadeCart()
+          }
+        })
+        
+        el('.cart').append(cartItem);
+
+        desconto = subtotal * 0.1;
+        total = subtotal - desconto
+
+        el('.subtotal span:last-child').innerHTML = `R$ ${subtotal.toFixed(2)}`
+        el('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`
+        el('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`
+        
+
+
+        
        }
-      
+       finalizarCompra()
       }
    
     else { 
       el('aside').classList.remove('show')
+    
    }
+  }
+
+ function finalizarCompra(i) {
+    let compra = el('.cart--finalizar-text')
+
+     el('.cart--finalizar').addEventListener('click', () => {
+      real++;
+      compra.innerHTML = `! Você tem ${real} compras em andamento`
+      cart.splice(i,1)
+      
+      uptadeCart()
+    })
   }

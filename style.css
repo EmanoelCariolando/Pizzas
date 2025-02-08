@@ -369,6 +369,13 @@ h1 {
 .cart--finalizar:hover {
     background-color:#35af4a;
 }
+.cart--finalizar-text{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    color: #32a345;
+    margin-top: 20px;
+}
 
 @media (max-width:1000px) {
     .pizza-area {
