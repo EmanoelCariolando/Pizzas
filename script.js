@@ -104,8 +104,23 @@
     closeModal()
    })
 
+   el('.menu-openner').addEventListener('click', ()=> {
+    if(cart.length > 0){
+      el('aside').style.left = '0'
+    }
+   });
+   
+   el('.menu-closer').addEventListener('click', () => {
+     el('aside').style.left = '100vw'
+   });
+      
+   
+    
+  
    function uptadeCart(){
     if (cart.length > 0){
+     el('.menu-openner span').innerHTML = cart.length;
+
       el('aside').classList.add('show');
       el('.cart').innerHTML = ''
 
